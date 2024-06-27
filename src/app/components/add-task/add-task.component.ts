@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Task } from '../../Task';
+import { ITask } from '../../services/task.service';
 
 @Component({
   selector: 'app-add-task',
@@ -8,29 +9,29 @@ import { Task } from '../../Task';
 })
 export class AddTaskComponent {
   @Output()
-    addTaskEmitter = new EventEmitter<Task>();
+    addTaskEmitter = new EventEmitter<ITask>();
 
 
-    text:string;
-    day:string;
+    name:string;
+    time:string;
     reminder:boolean =false;
 
 
     onSubmit(){
-      if(!this.text){
+      if(!this.name){
         alert('please add a task');
         return ;
       }
       const newTask ={
-        text:this.text,
-        day:this.day,
-        reminder:this.reminder
+        name:this.name,
+        time:this.time,
+        status:'pending'
       }
       //emit event  
       this.addTaskEmitter.emit(newTask)
 
-    this.text ='';
-    this.day ='';
+    this.name ='';
+    this.time ='';
     this.reminder=false;
     }
 

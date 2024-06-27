@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../../Task';
-import { TaskService } from '../../services/task.service';
+import { ITask, TaskService } from '../../services/task.service';
 
 
 @Component({
@@ -10,7 +10,7 @@ import { TaskService } from '../../services/task.service';
 })
 export class TasksComponent implements OnInit {
 
-  tasks:Task[]=[];
+  tasks:ITask[]=[];
   
   constructor(private taskService:TaskService){};
 
@@ -21,8 +21,10 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  deleteTask(task:Task){ 
-    this.taskService.deleteTask(task).subscribe(()=>(this.tasks = this.tasks.filter(t=> t.id != task.id)));
+  deleteTask(taskId:ITask){ 
+    console.log(taskId)
+    this.taskService.deleteTask(taskId);
+   
   }
 
   toggleTask(task){
@@ -31,9 +33,8 @@ export class TasksComponent implements OnInit {
   }
 
   onAddTask(task){
-    this.taskService.addTask(task).subscribe((task)=>{
-      this.tasks.push(task);
-    });
+    console.log(task);
+    this.taskService.addTask(task)
   }
 
 }
