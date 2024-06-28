@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http'; 
 import { Task } from '../Task';
-import {BehaviorSubject, Observable,of} from 'rxjs'
+import {BehaviorSubject, Observable,isEmpty,of} from 'rxjs'
 
 export interface ITask{
   name:string,
@@ -22,20 +22,15 @@ export class TaskService {
 
   sampleTasks:ITask[] =[
     {
-      name:'first Task',
+      name:'Wash The Car',
       time:'10:25',
-      status:'pending'
+      status:'completed'
     },
     {
-      name:'Second Task',
+      name:'Walk the Dog',
       time:'11:25',
       status:'pending'
     },
-    {
-      name:'Third Task',
-      time:'12:40',
-      status:'pending'
-    }
   ]
  
   taskSubject = new BehaviorSubject<ITask[]>(this.sampleTasks)
@@ -51,13 +46,19 @@ export class TaskService {
 
   deleteTask(taskId:ITask){
       this.sampleTasks = this.sampleTasks.filter(task=>task.name !== taskId.name);
-
+      this.taskSubject.next(this.sampleTasks);
       console.log(this.sampleTasks);
   }
 
-  updateTaskReminder(task:Task):Observable<Task>{
-    const url =`${this.apiUrl}/${task.id}`;
-    return this.http.put<Task>(url,task,httpOptions);
+  updateTaskReminder(task:ITask){
+    console.log(task);
+    this.sampleTasks.forEach(item=>{
+      if(item.name === task.name){
+        item.status = item.status === 'pending' ? 'completed' : 'pending';
+      }
+    })
+
+    this.taskSubject.next(this.sampleTasks)
   }
 
   addTask(task:ITask){

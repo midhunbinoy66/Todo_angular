@@ -15,7 +15,7 @@ export class TaskItemComponent implements OnInit {
 
     @Input() task:ITask
     @Output() onDeleteTask:EventEmitter<Task>= new EventEmitter();
-    @Output() onToggleTask:EventEmitter<Task> = new EventEmitter();
+    @Output() onToggleTask:EventEmitter<ITask> = new EventEmitter();
     faTimes= faTimes;
 
     onDelete(task){
